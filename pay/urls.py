@@ -22,4 +22,6 @@ urlpatterns = [
     path('home/',views.home, name="Home"),
     path('accounts/', include('allauth.urls')),
     path('profile/', views.profile, name="Profile"),
+    path('logout/', views.logoutA, name="Logout"),
+    path('', views.Main.as_view(),)
 ]

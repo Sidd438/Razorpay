@@ -1,14 +1,27 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template import context
+from django.contrib.auth import logout
 import razorpay
 from allauth.socialaccount.models import SocialAccount
+from django.views.generic import TemplateView
 
 from user.utils import handle_payment
 # Create your views here.
+
+class Main(TemplateView):
+    template_name = "main.html"
+
+def logoutA(request):
+    logout(request)
+    return redirect('/accounts/google/login')
+
 def home(request):
     actual_amount = 100
     current_user = request.user
+    if(request.POST.get("number")):
+        current_user.profile.phone_number = request.POST.get("number")
+        current_user.profile.save()
     if(current_user.is_anonymous):
         return redirect('/accounts/google/login')
     email = SocialAccount.objects.get(user=request.user).extra_data['email']
@@ -29,20 +42,20 @@ def home(request):
     }
     order=client.order.create(data=DATA)
     order_id = order['id']
-
     context = {
         "amount": actual_amount,
         "currency": "INR",
         "api_key": "rzp_test_WuHOZ859u5douX",
         "id":order_id,
         "user":current_user,
-        "email": email
+        "email": email,
+        "number":current_user.profile.phone_number
     }
     return render(request, 'checkout.html', context)
 
 def profile(request):
     current_user = request.user
-    payments = current_user.payment_set.filter().order_by("-date")
+    payments = current_user.payment_set.filter().order_by("-id")
     data = SocialAccount.objects.get(user=current_user).extra_data
     data['user'] = current_user
     data['payments'] = payments

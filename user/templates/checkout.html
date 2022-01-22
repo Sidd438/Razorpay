@@ -30,7 +30,13 @@
                     
             </div>
         </div>
+        <a class="btn btn-outline-success mx-2" href="{% url "Logout" %}">Logout</a>
     </nav>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input id="your_name" type="number" max="9999999999" min="1000000000" name="number" value={{number}} />
+        <input class='m-3 mt-0' type="submit" value="Set Number" />
+    </form>
     <form action="" method="post">
         {% csrf_token %}
         <input id="your_name" type="number" min="0" name="amount" value={{amount}} />
@@ -62,7 +68,7 @@
                         amount: "{{amount}}"
                     },
                     success: function () {
-                        console.log("lop")
+                        console.log(response)
                     },
                     headers: {
                         'X-CSRFToken': csrftoken
@@ -73,7 +79,7 @@
             "prefill": {
                 "name": "{{user.username}}",
                 "email": "{{email}}",
-                "contact": ""
+                "contact": "{{number}}"
             },
             "notes": {
                 "address": "Razorpay Corporate Office"
