@@ -15,7 +15,7 @@ def home(request):
     if "@pilani.bits-pilani.ac.in" not in email:
         current_user.delete()
         return render(request, 'error.html')
-    if(request.POST.get('amount')):
+    if(request.POST.get('order_id')):
         handle_payment(request)
     client = razorpay.Client(auth=("rzp_test_WuHOZ859u5douX", "nQhtnn82KImexidSzUJrXWVC"))
     if(request.POST.get("amount")):
@@ -39,3 +39,11 @@ def home(request):
         "email": email
     }
     return render(request, 'checkout.html', context)
+
+def profile(request):
+    current_user = request.user
+    payments = current_user.payment_set.filter().order_by("-date")
+    data = SocialAccount.objects.get(user=current_user).extra_data
+    data['user'] = current_user
+    data['payments'] = payments
+    return render(request, "profile.html", data)
