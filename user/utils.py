@@ -10,5 +10,5 @@ def handle_payment(request):
         status = True
     else:
         status = False
+    print(status)
     payment = Payment.objects.create( user=current_user, amount=request.POST.get('amount'),order_id=request.POST.get('order_id'),signature=request.POST.get('signature'),    payment_id=request.POST.get('payment_id'), status=status)
-    payment.save()

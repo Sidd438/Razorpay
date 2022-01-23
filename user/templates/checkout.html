@@ -99,13 +99,13 @@
         var rzp1 = new Razorpay(options);
         rzp1.on('payment.failed', function (response) {
             var csrftoken = Cookies.get('csrftoken');
-                $("h2").text("Your Payment Was a Faliure");
-                document.getElementById("number").style.display = "none";
-                document.getElementById("amount").style.display = "none";
-                document.getElementById("seta").style.display = "none";
-                document.getElementById("rzp-button1").style.display = "none";
-                document.getElementById("setn").style.display = "none";                
-                $.ajax({
+            $("h2").text("Your Payment Was a Faliure");
+            document.getElementById("number").style.display = "none";
+            document.getElementById("amount").style.display = "none";
+            document.getElementById("seta").style.display = "none";
+            document.getElementById("rzp-button1").style.display = "none";
+            document.getElementById("setn").style.display = "none";                
+            $.ajax({
                     type: "POST",
                     url: "/add/",
                     data: {
