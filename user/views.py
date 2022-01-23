@@ -16,6 +16,8 @@ def logoutA(request):
     logout(request)
     return redirect('/accounts/google/login')
 
+client = razorpay.Client(auth=("rzp_test_WuHOZ859u5douX", "nQhtnn82KImexidSzUJrXWVC"))
+
 def home(request):
     actual_amount = 100
     current_user = request.user
@@ -30,8 +32,8 @@ def home(request):
         return render(request, 'error.html')
     if(request.POST.get('order_id')):
         handle_payment(request)
-    client = razorpay.Client(auth=("rzp_test_WuHOZ859u5douX", "nQhtnn82KImexidSzUJrXWVC"))
-    if(request.POST.get("amount")):
+        print("ooo")
+    elif(request.POST.get("amount")):
         actual_amount = request.POST.get("amount")
     amount = int(actual_amount)*100
     DATA = {
@@ -60,3 +62,8 @@ def profile(request):
     data['user'] = current_user
     data['payments'] = payments
     return render(request, "profile.html", data)
+
+def add(request):
+    if(request.method == "POST"):
+        handle_payment(request)
+    return(request,"checkout.html")
