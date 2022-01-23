@@ -20,6 +20,8 @@ class Payment(models.Model):
     order_id = models.TextField()
     signature = models.TextField()
     payment_id = models.TextField()
+    status = models.BooleanField(default=True)
+
 
     def __str__(self):
         return (self.user.username)
